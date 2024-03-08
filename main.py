@@ -1,7 +1,5 @@
 from aiogram import Dispatcher, executor, Bot, types
 import sqlite3 as sq
-flag_add = False
-flag_delete = False
 
 # создание БД
 with sq.connect("shop3_0.db") as con:
@@ -18,17 +16,15 @@ with sq.connect("shop3_0.db") as con:
     price REAL
     )""")
 
-    for result in cur:
-        print(result)
-        print('*')
-
-
 token = '7147184053:AAH_BIEgqtrQtGtSoJrr3RnTV-j3JWiUhK4'
 bot = Bot(token)
 dp = Dispatcher(bot)
 
 # список id админов
 admin_id = [868320310]
+
+flag_add = False
+flag_delete = False
 
 async def on_startup(_):
     print("- - - BOT IS RUNNING - - -")
@@ -85,14 +81,6 @@ async def main(message: types.Message):
             cur.execute(f"DELETE FROM software WHERE name = '{message.text}'")
             print('db-software has been updated')
         await message.answer('db-software has been updated')
-
-
-
-
-
-
-
-
 
 if __name__ == '__main__':
     executor.start_polling(dp, skip_updates=False, on_startup=on_startup)

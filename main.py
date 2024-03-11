@@ -1,20 +1,30 @@
 from aiogram import Dispatcher, executor, Bot, types
 import sqlite3 as sq
+<<<<<<< HEAD
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.dispatcher.filters import Text
+=======
+>>>>>>> c631c4a65aa87dcba5b00840dae877678861a7d3
 
 from aiogram.dispatcher import FSMContext
 
+<<<<<<< HEAD
 import keyboards as kb
 import database as db
 from config import token, admin_id
 from StatesGroups import ClientStatesGroup, DeleteStatesGroup
 
 storage = MemoryStorage()
+=======
+token = '7147184053:AAH_BIEgqtrQtGtSoJrr3RnTV-j3JWiUhK4'
+>>>>>>> c631c4a65aa87dcba5b00840dae877678861a7d3
 bot = Bot(token)
 dp = Dispatcher(bot=bot,
                 storage=storage)
 
+
+flag_add = False
+flag_delete = False
 
 async def on_startup(_):
     print("- - - BOT IS RUNNING - - -")
@@ -102,9 +112,31 @@ async def load_name(message: types.Message, state: FSMContext):
 
 @dp.message_handler()
 async def main(message: types.Message):
+<<<<<<< HEAD
     if __name__ == '__main__':
         await message.reply('Да я тебя отечаю!!!!')
 
+=======
+    global flag_add
+    global flag_delete
+
+    if message.from_user.id in admin_id and flag_add:
+        flag_add = False
+        name, description, price = message.text.split('$')
+        with sq.connect("shop3_0.db") as con:
+            cur = con.cursor()
+            cur.execute(f"INSERT INTO software VALUES('{name}', '{description}', {price})")
+            print('db-software has been updated')
+        await message.answer('db-software has been updated')
+
+    if message.from_user.id in admin_id and flag_delete:
+        flag_delete = False
+        with sq.connect("shop3_0.db") as con:
+            cur = con.cursor()
+            cur.execute(f"DELETE FROM software WHERE name = '{message.text}'")
+            print('db-software has been updated')
+        await message.answer('db-software has been updated')
+>>>>>>> c631c4a65aa87dcba5b00840dae877678861a7d3
 
 if __name__ == '__main__':
     executor.start_polling(dp, skip_updates=False, on_startup=on_startup)
